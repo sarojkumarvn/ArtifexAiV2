@@ -1,9 +1,37 @@
+
 export const featurecard = [
   {
     id: 0,
-    title: " Image-to-Text",
+    title: "Ai chatbot",
+    description:
+      "Engage with our intelligent chatbot for instant assistance, information, and creative solutions.",
+      path: "/aichatbot",
+
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-8 w-8 text-indigo-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        id="el-wp1ido92"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+          id="el-cj41qpi5"
+        ></path>
+      </svg>
+    ),
+  },
+  {
+    id: 1,
+    title: " Image To Text",
     description:
       "Advanced image recognition that accurately extracts and interprets text from any visual.",
+      path: "/image-to-text",
 
     icon: (
       <svg
@@ -32,15 +60,16 @@ export const featurecard = [
     ),
   },
   {
-    id: 1,
-    title: " Text-to-Image",
+    id: 2,
+    title: "Image Generation",
     description:
       "Transform your words into stunning visuals with our AI-powered image generation tools.",
+      path: "/text-to-image",
 
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-10 w-10 text-indigo-600"
+        className="h-10 w-10 text-indigo-600 "
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -56,29 +85,5 @@ export const featurecard = [
       </svg>
     ),
   },
-  {
-    id: 2,
-    title: "Ai chatbot",
-    description:
-      "Engage with our intelligent chatbot for instant assistance, information, and creative solutions.",
-
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-8 w-8 text-indigo-600"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        id="el-wp1ido92"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-          id="el-cj41qpi5"
-        ></path>
-      </svg>
-    ),
-  },
+ 
 ];

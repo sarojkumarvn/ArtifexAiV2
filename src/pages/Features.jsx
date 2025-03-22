@@ -1,7 +1,9 @@
 import React from "react";
 import { featurecard } from "../constant/CardConstant";
+import {  useNavigate } from "react-router-dom";
 
 const Features = () => {
+const Navigate = useNavigate();
   return (
     <div>
       <section id="features" className="bg-gray-50 py-20">
@@ -41,7 +43,7 @@ const Features = () => {
                 </p>
                 <div className="flex justify-end" id="el-4xp5zvak">
                   <button
-                  onClick={card.path}
+                  onClick={()=> Navigate(card.path)}
                     className={`bg-indigo-600 text-white font-medium py-3 px-6 rounded hover:scale-105 hover:shadow transition-all duration-300`}
                     id="el-lu18mzr9"
                   >
