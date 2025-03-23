@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { carddetails, chats } from "./AiChatBotConstant";
 import { getAiResponse } from "../../util/GeminiApiText";
 
-
 export const AiChatBotHome = () => {
   const [isChatOpened, setisChatOpened] = useState(false);
   const [history, setHistory] = useState([]); // Stores chat history
   const [userInput, setUserInput] = useState(""); // Stores user input
+  const [loading, setLoading] = useState(false); // loader state
   const chatEndRef = useRef(null); // Ref for auto-scrolling to the bottom
+  // const[showHistory,setShowHistory]=useState(true) will be added soon 
 
   const toggleChat = () => {
     setisChatOpened(!isChatOpened);
@@ -15,21 +16,27 @@ export const AiChatBotHome = () => {
 
   // Function to generate a bot response
   const generateBotResponse = async () => {
-    try {
-      // Sending the user message to the API
-      const response = await getAiResponse(userInput);
-      setHistory((prevHistory) => [
-        ...prevHistory,
-        { sender: "bot", message: response }, // response from the bot 
-      ]);
-    } catch (error) {
-      console.error("Error generating bot response:", error);
-      // Optionally, you can add an error message to the chat history
-      setHistory((prevHistory) => [
-        ...prevHistory,
-        { sender: "bot", message: "Sorry, something went wrong. Please try again." },
-      ]);
-    }
+    setLoading(true); // show the loader
+    setTimeout(async () => {
+      try {
+        const response = await getAiResponse(userInput);
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          { sender: "bot", message: response },
+        ]);
+      } catch (error) {
+        console.error("Error generating bot response:", error);
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          {
+            sender: "bot",
+            message: "Sorry, something went wrong. Please try again.",
+          },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    }, 1000);
   };
 
   // Function to handle user input
@@ -57,7 +64,7 @@ export const AiChatBotHome = () => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [history]);
+  }, [history, loading]);
 
   return (
     <div className="flex h-screen bg-white text-gray-800 overflow-y-hidden">
@@ -121,9 +128,9 @@ export const AiChatBotHome = () => {
 
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-800">Chats</span>
-            <button onClick={toggleChat} className="text-gray-500 text-xl">
-              +
+            <button onClick={toggleChat} className="text-white text-xl bg-green-600 px-2 py-1 rounded w-full">
+            <span>Chats</span>
+               
             </button>
           </div>
 
@@ -260,6 +267,14 @@ export const AiChatBotHome = () => {
                   </div>
                 </div>
               ))}
+              {/* Loading statement */}
+              {loading && (
+                <div className="flex justify-start">
+                  <div className="max-w-md p-3 rounded-lg bg-gray-100 text-gray-800">
+                    <span className="loading loading-dots loading-lg"></span>
+                  </div>
+                </div>
+              )}
               <div ref={chatEndRef} /> {/* Auto-scroll to this element */}
             </div>
           )}
@@ -312,7 +327,8 @@ export const AiChatBotHome = () => {
             </div>
           </form>
           <p className="text-xs text-gray-500 text-center mt-4">
-            Artifex Ai can make mistakes. Consider checking important information.
+            Artifex Ai can make mistakes. Consider checking important
+            information.
           </p>
         </div>
       </div>

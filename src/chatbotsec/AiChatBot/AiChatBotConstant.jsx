@@ -46,7 +46,7 @@ export const carddetails = [
   {
     id: 1,
     title: "Media Type Selection",
-    description: "Quick access to select the type of content to create",
+    description: "Get access to get explanations for images",
     icon: (
       <svg
         class="h-5 w-5 text-gray-500"
@@ -65,8 +65,8 @@ export const carddetails = [
   },
   {
     id: 2,
-    title: "Multilingual Support",
-    description: "Create a single for multilingual chats",
+    title: "Image Generation",
+    description: " Instantly transform ideas into stunning visuals ,storytelling, or inspiration.",
     icon: (
       <svg
         class="h-5 w-5 text-gray-500"
