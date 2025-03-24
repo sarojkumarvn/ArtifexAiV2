@@ -1,49 +1,75 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require("fs");
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(API_KEY);
 
-async function generateImage() {
-    // Load the image from the local file system
-    const imagePath = '/path/to/image.png';
-    const imageData = fs.readFileSync(imagePath);
-    const base64Image = imageData.toString('base64');
-
-    // Prepare the content parts
-    const contents = [
-        { text: "Hi, This is a picture of me. Can you add a llama next to me?" },
-        {
-          inlineData: {
-            mimeType: 'image/png',
-            data: base64Image
-          }
-        }
-      ];
-
-  // Set responseModalities to include "Image" so the model can generate an image
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash-exp-image-generation",
-    generationConfig: {
-        responseModalities: ['Text', 'Image']
-    },
-  });
-
+export const generateImagesWithGemini = async (prompt, count, aspectRatio) => {
   try {
-    const response = await model.generateContent(contents);
-    for (const part of  response.response.candidates[0].content.parts) {
-      // Based on the part type, either show the text or save the image
-      if (part.text) {
-        console.log(part.text);
-      } else if (part.inlineData) {
-        const imageData = part.inlineData.data;
-        const buffer = Buffer.from(imageData, 'base64');
-        fs.writeFileSync('gemini-native-image.png', buffer);
-        console.log('Image saved as gemini-native-image.png');
-      }
-    }
-  } catch (error) {
-    console.error("Error generating content:", error);
-  }
-}
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash-exp-image-generation",
+      generationConfig: { responseModalities: ["Text", "Image"] },
+    });
 
-generateImage();
+    // ✅ Ensure multiple images are requested properly
+    const imagePromises = Array.from({ length: count }, (_, i) =>
+      model.generateContent([{ text: i === 0 ? prompt : `${prompt} (variation ${i + 1})` }])
+    );
+
+    const responses = await Promise.allSettled(imagePromises); // ✅ Handle all API calls properly
+
+    return responses.map((result, index) => {
+      if (result.status === "fulfilled") {
+        return extractImage(result.value, index, prompt, aspectRatio);
+      } else {
+        console.error(`Error for image ${index + 1}:`, result.reason); // ✅ Added better error logging
+        return createPlaceholder(index, prompt, aspectRatio, result.reason?.message);
+      }
+    });
+  } catch (error) {
+    console.error("Error generating images:", error);
+    return Array.from({ length: count }, (_, i) =>
+      createPlaceholder(i, prompt, aspectRatio, error.message)
+    );
+  }
+};
+
+const extractImage = (response, index, prompt, aspectRatio) => {
+  // ✅ Validate API response structure to prevent crashes
+  if (!response || !response.response || !response.response.candidates) {
+    console.error("Invalid API response format:", response);
+    return createPlaceholder(index, prompt, aspectRatio, "Invalid API response");
+  }
+
+  const candidate = response.response.candidates[0];
+
+  // ✅ Ensure we correctly fetch the image data
+  const imagePart = candidate?.content?.parts?.find(part => part.inlineData);
+
+  if (imagePart) {
+    return {
+      id: Date.now() + index,
+      url: `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`,
+      prompt,
+      isPlaceholder: false,
+    };
+  } else {
+    console.error(`No image data found for response index ${index}:`, response);
+    return createPlaceholder(index, prompt, aspectRatio, "No image data found");
+  }
+};
+
+// ✅ Improved error handling for placeholder images
+const createPlaceholder = (index, prompt, aspectRatio, error = null) => ({
+  id: Date.now() + index,
+  url: `/api/placeholder/${getImageDimensions(aspectRatio)}`,
+  prompt,
+  isPlaceholder: true,
+  error,
+});
+
+// ✅ Ensure correct image dimensions for different aspect ratios
+const getImageDimensions = (ratio) => ({
+  landscape: "100/75",
+  portrait: "75/100",
+  square: "65/65",
+}[ratio] || "65/65");

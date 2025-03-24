@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import  SignIn from "../_auth/SignIn";
+import SignUp from '../_auth/SignUp';
 
 
 export const NavBar = () => {
@@ -23,18 +25,10 @@ export const NavBar = () => {
           </Link>
         </div>
         <div className="flex items-center space-x-4">
-          <Link
-            to="/signin"
-            className="text-blue-500 hover:text-blue-600 font-medium"
-          >
-            Sign In
-          </Link>
-          <Link
-            to="/signup"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Sign Up
-          </Link>
+          <SignIn />
+          <SignUp />
+        
+         
         </div>
       </nav>
   )
