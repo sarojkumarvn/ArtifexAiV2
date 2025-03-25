@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { generateImagesWithGemini } from "../../util/GeminiApiImgGene";
 import { carddetails } from "../AiChatBot/AiChatBotConstant";
+import AIChatbotLoader from "../AiChatBot/AiChatBotLoader";
 
 export const ImageGeneBotHome = () => {
   const [prompt, setPrompt] = useState("");
@@ -116,6 +117,8 @@ const handleSubmit = async (e) => {
   };
 
   return (
+    <>
+    <AIChatbotLoader />
     <div className="flex h-screen bg-gray-50 text-gray-800">
       {/* Sidebar  */}
       <div
@@ -447,5 +450,7 @@ const handleSubmit = async (e) => {
         </div>
       </div>
     </div>
+    </>
+
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { carddetails, chats } from "../AiChatBot/AiChatBotConstant";
 import { analyzeImageWithPrompt } from "../../util/GeminiImgText";
+import AIChatbotLoader from "../AiChatBot/AiChatBotLoader";
 
 export const ImgToTextBotHome = () => {
   const [isChatOpened, setisChatOpened] = useState(false);
@@ -96,8 +97,8 @@ export const ImgToTextBotHome = () => {
         { sender: "user", message: userInput, image: imagePreview },
       ]);
       
-      // Generate bot response with the image and prompt
-      generateBotResponse(userInput, imagePreview);
+      // calling Generate bot response with the image and prompt
+      generateBotResponse(userInput, imagePreview); // main stream
       
       // Reset states
       setImagePreview(null);
@@ -139,6 +140,8 @@ export const ImgToTextBotHome = () => {
   }, [history, loading]);
 
   return (
+    <>
+    <AIChatbotLoader />
     <div className="flex h-screen bg-white text-gray-800 overflow-y-hidden">
       {/* Sidebar */}
       <div className="w-1/4 bg-gray-100 border-r border-gray-200 p-4 flex flex-col">
@@ -150,12 +153,12 @@ export const ImgToTextBotHome = () => {
                 className="h-5 w-5"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-              >
+                >
                 <path
                   fillRule="evenodd"
                   d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
                   clipRule="evenodd"
-                />
+                  />
               </svg>
             </div>
             <span className="ml-2 font-medium">My Chats</span>
@@ -181,7 +184,7 @@ export const ImgToTextBotHome = () => {
             type="text"
             placeholder="Search"
             className="w-full bg-white border border-gray-300 rounded-md py-2 pl-8 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
-          />
+            />
           <svg
             className="absolute left-2 top-2.5 h-4 w-4 text-gray-400"
             fill="none"
@@ -214,7 +217,7 @@ export const ImgToTextBotHome = () => {
                 <div
                   key={index}
                   className={`bg-white rounded-md p-3 cursor-pointer hover:bg-gray-50 border border-gray-200
-              ${index === 1 ? "" : "hidden"}
+                    ${index === 1 ? "" : "hidden"}
               `}
                 >
                   <div className="flex items-center justify-between mb-1">
@@ -258,7 +261,7 @@ export const ImgToTextBotHome = () => {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
-              >
+                >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -281,7 +284,7 @@ export const ImgToTextBotHome = () => {
                   className="h-6 w-6 text-gray-500"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                >
+                  >
                   <path
                     fillRule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
@@ -335,7 +338,7 @@ export const ImgToTextBotHome = () => {
                   <div
                     className={`max-w-md p-3 rounded-lg ${
                       chat.sender === "user"
-                        ? "bg-green-100 text-green-800 mr-5"
+                      ? "bg-green-100 text-green-800 mr-5"
                         : "bg-gray-100 text-gray-800"
                     }`}
                   >
@@ -344,7 +347,7 @@ export const ImgToTextBotHome = () => {
                         src={chat.image}
                         alt="User uploaded"
                         className="w-32 h-32 object-cover rounded-lg mb-2"
-                      />
+                        />
                     )}
                     <p className="text-s">{chat.message}</p>
                   </div>
@@ -468,7 +471,7 @@ export const ImgToTextBotHome = () => {
                     strokeLinejoin="round"
                     strokeWidth={2}
                     d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
+                    />
                 </svg>
               </button>
             </div>
@@ -493,5 +496,6 @@ export const ImgToTextBotHome = () => {
         </div>
       </div>
     </div>
+                    </>
   );
 };

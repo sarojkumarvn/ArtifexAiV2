@@ -13,11 +13,13 @@
     "@clerk/clerk-react": "^5.25.2",
     "@google/generative-ai": "^0.24.0",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@splinetool/react-spline": "^4.0.0",
     "@tailwindcss/vite": "^4.0.15",
     "framer-motion": "^12.5.0",
     "lucide-react": "^0.483.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-loading-skeleton": "^3.5.0",
     "react-router-dom": "^7.4.0"
   },
   "devDependencies": {

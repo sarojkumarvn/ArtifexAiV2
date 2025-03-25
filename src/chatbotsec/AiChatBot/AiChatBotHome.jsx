@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { carddetails, chats } from "./AiChatBotConstant";
 import { getAiResponse } from "../../util/GeminiApiText";
+import AIChatbotLoader from "./AiChatBotLoader";
 
 export const AiChatBotHome = () => {
   const [isChatOpened, setisChatOpened] = useState(false);
@@ -67,6 +68,9 @@ export const AiChatBotHome = () => {
   }, [history, loading]);
 
   return (
+    <>
+    <AIChatbotLoader />
+
     <div className="flex h-screen bg-white text-gray-800 overflow-y-hidden">
       {/* Sidebar */}
       <div className="w-1/4 bg-gray-100 border-r border-gray-200 p-4 flex flex-col">
@@ -333,6 +337,7 @@ export const AiChatBotHome = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
