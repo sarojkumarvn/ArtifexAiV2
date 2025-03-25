@@ -1,7 +1,78 @@
 import React from "react";
 import { plans } from "../constant/PricingCardConst";
+import { FaMoneyBill } from "react-icons/fa";
 
 const Pricing = () => {
+  const handlePayment = (e) => {
+    e.preventDefault();
+    
+    const options = {
+      "key": "rzp_test_kJpSEay4QVdT5N", // Enter the Key ID generated from the Dashboard
+      "amount": "1000",
+      "currency": "INR",
+      "description": "Artifex Ai",
+      "image": "example.com/image/rzp.jpg",
+      "prefill": {
+        "email": "sarojweb2457@gmail.com",
+        "contact": "824***12**",
+      },
+      config: {
+        display: {
+          blocks: {
+            utib: { 
+              name: "Pay Using Axis Bank",
+              instruments: [
+                {
+                  method: "card",
+                  issuers: ["UTIB"]
+                },
+                {
+                  method: "netbanking",
+                  banks: ["UTIB"]
+                },
+              ]
+            },
+            other: { //  name for other block
+              name: "Other Payment Methods",
+              instruments: [
+                {
+                  method: "card",
+                  issuers: ["ICIC"]
+                },
+                {
+                  method: 'netbanking',
+                }
+              ]
+            }
+          },
+          hide: [
+            {
+              method: "upi"
+            }
+          ],
+          sequence: ["block.utib", "block.other"],
+          preferences: {
+            show_default_blocks: false // Should Checkout show its default blocks?
+          }
+        }
+      },
+      "handler": function (response) {
+        alert(response.razorpay_payment_id);
+      },
+      "modal": {
+        "ondismiss": function () {
+          if (confirm("Are you sure, you want to close the form?")) {
+            console.log("Checkout form closed by the user");
+          } else {
+            console.log("Complete the Payment")
+          }
+        }
+      }
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
   return (
     <div className="container mx-auto px-4 py-20">
       <h2 className="text-4xl font-bold text-gray-800 text-center mb-12">
@@ -57,6 +128,8 @@ const Pricing = () => {
             {/* Ensure button is always aligned at the bottom of each card */}
             <div className="mt-auto flex justify-center">
               <button
+               onClick={handlePayment}
+               id="rzp-button1" 
                 className={`bg-indigo-600 text-white font-medium py-3 px-6 rounded hover:scale-105 hover:shadow 
                 transition-all duration-300 w-full ${index===1 ? "mb-3" : ""}`}
               >

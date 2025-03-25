@@ -5,7 +5,7 @@ export const featurecard = [
     title: "Ai chatbot",
     description:
       "Engage with our intelligent chatbot for instant assistance, information, and creative solutions.",
-      path: "/aichatbot",
+      path: "/app/aichatbot",
 
     icon: (
       <svg
@@ -31,7 +31,7 @@ export const featurecard = [
     title: " Image To Text",
     description:
       "Advanced image recognition that accurately extracts and interprets text from any visual.",
-      path: "/image-to-text",
+      path: "/app/imagetotext",
 
     icon: (
       <svg
@@ -64,7 +64,7 @@ export const featurecard = [
     title: "Image Generation",
     description:
       "Transform your words into stunning visuals with our AI-powered image generation tools.",
-      path: "/text-to-image",
+      path: "/app/texttoimage",
 
     icon: (
       <svg
