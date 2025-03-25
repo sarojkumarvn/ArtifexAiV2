@@ -18,7 +18,7 @@ export const plans = [
   {
     id: 1,
     name: "Pre Release Plan",
-    price: "Free",
+    price: "$10",
     description: "Perfect for individuals getting started with AI.",
     features: [
       "5 AI image generations daily",

@@ -9,7 +9,7 @@ const Pricing = () => {
     const options = {
       "key": "rzp_test_kJpSEay4QVdT5N", // Enter the Key ID generated from the Dashboard
       "amount": "1000",
-      "currency": "INR",
+      "currency": "USD",
       "description": "Artifex Ai",
       "image": "example.com/image/rzp.jpg",
       "prefill": {
