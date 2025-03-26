@@ -8,7 +8,7 @@ export const AppLayout = () => {
   if (!isLoaded) {
     return (
       <div>
-        <AIChatbotLoader />
+        {/* <AIChatbotLoader /> */}
       </div>
     );
   }

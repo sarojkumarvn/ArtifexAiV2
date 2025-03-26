@@ -8,7 +8,7 @@ import HowItWorks from "../pages/WorkSteps";
 const LandingPage = () => {
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white overflow-x-hidden w-full">
       <NavBar />
       <Main />
       <Features />

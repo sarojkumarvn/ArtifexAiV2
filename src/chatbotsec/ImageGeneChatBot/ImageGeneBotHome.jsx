@@ -334,12 +334,12 @@ export const ImageGeneBotHome = () => {
                       <div
                         className={`mt-4 grid gap-3 ${
                           message.images.length === 1
-                            ? "grid-cols-1"
+                            ? "grid-cols-1" // if there is one imaage
                             : message.images.length === 2
-                            ? "grid-cols-2"
+                            ? "grid-cols-2" // if there are two images
                             : message.images.length === 3
-                            ? "grid-cols-3"
-                            : message.images.length >= 4
+                            ? "grid-cols-3" // if there are three images
+                            : message.images.length >= 4 // if there are more than three images
                             ? "grid-cols-2 md:grid-cols-4"
                             : "grid-cols-2 md:grid-cols-3"
                         }`}
@@ -352,8 +352,9 @@ export const ImageGeneBotHome = () => {
                             <img
                               src={img.url}
                               alt={img.prompt}
-                              className="w-full h-full object-cover"
+                              className="w-100 h-100 object-cover"
                             />
+
                             {img.isPlaceholder && img.error && (
                               <div className="text-xs text-red-500 mt-1 p-1">
                                 Error: {img.error}
@@ -368,6 +369,7 @@ export const ImageGeneBotHome = () => {
               ))
             )}
 
+            {/* Loading statement */}
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-white rounded-lg p-6 shadow-md flex items-center space-x-3">
@@ -412,21 +414,18 @@ export const ImageGeneBotHome = () => {
                 </div>
 
                 {/* Enhanced Aspect Ratio Selector */}
-                <div className="w-full md:w-48">
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Aspect Ratio
-                  </label>
+                <div className=" md:w-48 flex flex-row w-150">
                   <div className="relative">
                     <select
                       value={aspectRatio}
                       onChange={(e) => setAspectRatio(e.target.value)}
-                      className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none bg-white"
+                      className="w-full pl-10 pr-3 py-2 border mt-5  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none bg-white"
                     >
                       <option value="square">Square (1:1)</option>
                       <option value="landscape">Landscape (4:3)</option>
                       <option value="portrait">Portrait (3:4)</option>
                     </select>
-                    <div className="absolute left-2 top-2">
+                    <div className="absolute left-2 top-2 mt-5">
                       <AspectRatioIcon type={aspectRatio} />
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -443,6 +442,65 @@ export const ImageGeneBotHome = () => {
                         />
                       </svg>
                     </div>
+                  </div>
+
+                  {/* Download button */}
+                  <div className="w-6 h-6 ml-2 mt-6">
+                    {messages.map(
+                      (message) =>
+                        message.image &&
+                        message.images.map((image, index) => (
+                          <div 
+                          key={index} 
+                          className="flex items-center">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                
+                                const link = document.createElement("a");
+                                link.href = image.url;
+                                link.download = `artifex-ai-image-${index}.png`; // You can customize the filename
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                              }}
+                              className="text-black bg-black px-2 rounded flex items-center"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                color="black"
+                                fill="none"
+                              >
+                                <path
+                                  d="M17.4776 9.01106C17.485 9.01102 17.4925 9.01101 17.5 9.01101C19.9853 9.01101 22 11.0294 22 13.5193C22 15.8398 20.25 17.7508 18 18M17.4776 9.01106C17.4924 8.84606 17.5 8.67896 17.5 8.51009C17.5 5.46695 15.0376 3 12 3C9.12324 3 6.76233 5.21267 6.52042 8.03192M17.4776 9.01106C17.3753 10.1476 16.9286 11.1846 16.2428 12.0165M6.52042 8.03192C3.98398 8.27373 2 10.4139 2 13.0183C2 15.4417 3.71776 17.4632 6 17.9273M6.52042 8.03192C6.67826 8.01687 6.83823 8.00917 7 8.00917C8.12582 8.00917 9.16474 8.38194 10.0005 9.01101"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M12 21L12 13M12 21C11.2998 21 9.99153 19.0057 9.5 18.5M12 21C12.7002 21 14.0085 19.0057 14.5 18.5"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+
+                              <a
+                                href={image.url}
+                                className="text-blacktext-sm mr-2 bg-black"
+                                download
+                              >
+                                Save
+                              </a>
+                            </button>
+                          </div>
+                        ))
+                    )}
                   </div>
                 </div>
               </div>

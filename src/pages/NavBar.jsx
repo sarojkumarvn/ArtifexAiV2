@@ -20,10 +20,10 @@ export const NavBar = () => {
         <Link to="/" className="text-gray-600 hover:text-gray-900">
           Home
         </Link>
-        <Link to="/features" className="text-gray-600 hover:text-gray-900">
+        <Link to="/" className="text-gray-600 hover:text-gray-900">
           Features
         </Link>
-        <Link to="/pricing" className="text-gray-600 hover:text-gray-900">
+        <Link to="/" className="text-gray-600 hover:text-gray-900">
           Pricing
         </Link>
       </div>
