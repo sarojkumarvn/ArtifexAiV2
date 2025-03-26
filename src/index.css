@@ -1,3 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+body {
+    overflow-x: hidden;
+    width: 100vw;
+}

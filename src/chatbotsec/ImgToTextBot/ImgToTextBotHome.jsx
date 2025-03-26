@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { carddetails, chats } from "../AiChatBot/AiChatBotConstant";
 import { analyzeImageWithPrompt } from "../../util/GeminiImgText";
 import AIChatbotLoader from "../AiChatBot/AiChatBotLoader";
+import { div } from "framer-motion/client";
 
 export const ImgToTextBotHome = () => {
-  const [isChatOpened, setisChatOpened] = useState(false);
+  const [isChatOpened, setisChatOpened] = useState(false); // history chat button 
   const [history, setHistory] = useState([]); // Stores chat history
   const [userInput, setUserInput] = useState(""); // Stores user input
   const [loading, setLoading] = useState(false); // loader state
@@ -16,7 +17,15 @@ export const ImgToTextBotHome = () => {
 
   const chatEndRef = useRef(null); // Ref for auto-scrolling to the bottom
   const fileInputRef = useRef(null); // Ref for file input
-  const imageButtonRef = useRef(null); // Ref for image upload button
+  const imageButtonRef = useRef(null);// Ref for image upload button
+
+
+    // Toggling the chatbutton
+    const toggleChat = () => {
+      setisChatOpened(!isChatOpened);
+    };
+
+
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0]; // Targetting the selected file
@@ -39,10 +48,7 @@ export const ImgToTextBotHome = () => {
     }
   };
 
-  // Toggling the chatbutton
-  const toggleChat = () => {
-    setisChatOpened(!isChatOpened);
-  };
+
 
   // Function to generate a bot response using Gemini API
   const generateBotResponse = async (prompt, imageBase64) => {
@@ -202,18 +208,27 @@ export const ImgToTextBotHome = () => {
           </div>
 
           <div className="mb-6">
+            {/* TO be added  */}
             <div className="flex justify-between items-center mb-2">
               <button
                 onClick={toggleChat}
-                className="text-white text-xl bg-indigo-600 hover:bg-indigo-500 px-2 py-1 rounded w-full"
-              >
+              className={`text-white text-xl bg-indigo-600 hover:bg-indigo-500 px-2 py-1 rounded w-full`}
+              > 
                 <span>Chats</span>
               </button>
             </div>
 
-            {isChatOpened && (
+            {isChatOpened && history.length > 0 && (
               <div className="space-y-2">
-                
+                {history.filter((chat)=> chat.sender === "user").map((chat , index)=>(
+                  <div
+                  key={index}
+                  className={`bg-white rounded-md p-3 cursor-pointer hover:bg-gray-50 border border-gray-700`}
+                  >
+                    <p className="text-gray-900 text-xs">{chat.message}</p>
+
+                  </div>
+                ))}
               </div>
             )}
           </div>

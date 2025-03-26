@@ -10,42 +10,44 @@ export const generateImagesWithGemini = async (prompt, count, aspectRatio) => {
       generationConfig: { responseModalities: ["Text", "Image"] },
     });
 
-    // ✅ Ensure multiple images are requested properly
-    const imagePromises = Array.from({ length: count }, (_, i) =>
-      model.generateContent([{ text: i === 0 ? prompt : `${prompt} (variation ${i + 1})` }])
-    );
+    // ✅ Delay function to avoid API rate limits (optional)
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    const responses = await Promise.allSettled(imagePromises); // ✅ Handle all API calls properly
+    // ✅ Ensure multiple images are requested properly
+    const imagePromises = Array.from({ length: count }, async (_, i) => {
+      await delay(i * 500); // Delay each request slightly
+      return model.generateContent([{ text: i === 0 ? prompt : `${prompt} (variation ${i + 1})` }]);
+    });
+
+    const responses = await Promise.allSettled(imagePromises);
 
     return responses.map((result, index) => {
       if (result.status === "fulfilled") {
         return extractImage(result.value, index, prompt, aspectRatio);
       } else {
-        console.error(`Error for image ${index + 1}:`, result.reason); // ✅ Added better error logging
+        console.error(`❌ API Error for image ${index + 1}:`, JSON.stringify(result.reason, null, 2));
         return createPlaceholder(index, prompt, aspectRatio, result.reason?.message);
       }
     });
   } catch (error) {
-    console.error("Error generating images:", error);
+    console.error("🚨 Error generating images:", error);
     return Array.from({ length: count }, (_, i) =>
       createPlaceholder(i, prompt, aspectRatio, error.message)
     );
   }
 };
 
+// ✅ Extract image data safely
 const extractImage = (response, index, prompt, aspectRatio) => {
-  // ✅ Validate API response structure to prevent crashes
-  if (!response || !response.response || !response.response.candidates) {
-    console.error("Invalid API response format:", response);
+  if (!response?.response?.candidates?.length) {
+    console.error("⚠️ Invalid API response format:", response);
     return createPlaceholder(index, prompt, aspectRatio, "Invalid API response");
   }
 
   const candidate = response.response.candidates[0];
+  const imagePart = candidate?.content?.parts?.find((part) => part.inlineData);
 
-  // ✅ Ensure we correctly fetch the image data
-  const imagePart = candidate?.content?.parts?.find(part => part.inlineData);
-
-  if (imagePart) {
+  if (imagePart?.inlineData?.data) {
     return {
       id: Date.now() + index,
       url: `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`,
@@ -53,23 +55,25 @@ const extractImage = (response, index, prompt, aspectRatio) => {
       isPlaceholder: false,
     };
   } else {
-    console.error(`No image data found for response index ${index}:`, response);
+    console.error(`⚠️ No image data found for response index ${index}:`, response);
     return createPlaceholder(index, prompt, aspectRatio, "No image data found");
   }
 };
 
-// ✅ Improved error handling for placeholder images
-const createPlaceholder = (index, prompt, aspectRatio, error = null) => ({
+// ✅ Improved placeholder handling
+const createPlaceholder = (index, prompt, error = null) => ({
   id: Date.now() + index,
-  url: `/api/placeholder/${getImageDimensions(aspectRatio)}`,
+  url: `/images/placeholder.png`, // Ensure you have this placeholder image in your project
   prompt,
   isPlaceholder: true,
   error,
 });
 
-// ✅ Ensure correct image dimensions for different aspect ratios
-const getImageDimensions = (ratio) => ({
-  landscape: "100/75",
-  portrait: "75/100",
-  square: "65/65",
-}[ratio] || "65/65");
+// ✅ Correct dimensions based on aspect ratio
+const getImageDimensions = (ratio) =>
+  ({
+    landscape: "100/75",
+    portrait: "75/100",
+    square: "65/65",
+  }[ratio] || "65/65");
+
