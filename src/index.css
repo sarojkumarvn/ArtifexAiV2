@@ -5,3 +5,91 @@ body {
     overflow-x: hidden;
     width: 100vw;
 }
+/* Add this to your CSS file */
+.markdown-content {
+    line-height: 1.6;
+  }
+  
+  .markdown-content h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .markdown-content h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .markdown-content h3 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .markdown-content p {
+    margin-bottom: 0.75rem;
+  }
+  
+  .markdown-content ul, .markdown-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .markdown-content li {
+    margin-bottom: 0.25rem;
+  }
+  
+  .markdown-content pre {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    margin-bottom: 0.75rem;
+  }
+  
+  .markdown-content code {
+    font-family: monospace;
+    background-color: #edf2f7;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.25rem;
+  }
+  
+  .markdown-content pre code {
+    background-color: transparent;
+    padding: 0;
+    color: inherit;
+  }
+  
+  .markdown-content blockquote {
+    border-left: 4px solid #a0aec0;
+    padding-left: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+  }
+  
+  .markdown-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+  
+  .markdown-content table th, .markdown-content table td {
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+  }
+  
+  .markdown-content table th {
+    background-color: #f7fafc;
+  }
+  
+  .markdown-content a {
+    color: #4299e1;
+    text-decoration: underline;
+  }

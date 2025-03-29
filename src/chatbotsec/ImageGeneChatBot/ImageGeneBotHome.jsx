@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { generateImagesWithGemini } from "../../util/GeminiApiImgGene";
 import { carddetails } from "../AiChatBot/AiChatBotConstant";
 import AIChatbotLoader from "../AiChatBot/AiChatBotLoader";
-import { div } from "framer-motion/client";
 
 export const ImageGeneBotHome = () => {
   const [prompt, setPrompt] = useState("");

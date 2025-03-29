@@ -3,6 +3,8 @@ import { carddetails, chats } from "./AiChatBotConstant";
 import { getAiResponse } from "../../util/GeminiApiText";
 import { useUser } from "@clerk/clerk-react";
 import AIChatbotLoader from "./AiChatBotLoader";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export const AiChatBotHome = () => {
   const [isChatOpened, setisChatOpened] = useState(false);
@@ -10,7 +12,6 @@ export const AiChatBotHome = () => {
   const [userInput, setUserInput] = useState(""); // Stores user input
   const [loading, setLoading] = useState(false); // loader state
   const chatEndRef = useRef(null); // Ref for auto-scrolling to the bottom
-  // const[showHistory,setShowHistory]=useState(true) will be added soon
 
   const { isLoaded, user } = useUser();
 
@@ -271,7 +272,16 @@ export const AiChatBotHome = () => {
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      <p className="text-s">{chat.message}</p>
+                      {chat.sender === "user" ? (
+                        <p className="text-sm">{chat.message}</p>
+                      ) : (
+                        <div className="markdown-content text-sm">
+                          {/* Adding remarkable for markdown */}
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {chat.message}
+                          </ReactMarkdown>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

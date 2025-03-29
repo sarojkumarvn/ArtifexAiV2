@@ -8,7 +8,7 @@ const Pricing = () => {
     e.preventDefault();
 
     const options = {
-      key: "rzp_test_kJpSEay4QVdT5N", // Enter the Key ID generated from the Dashboard
+      key: "rzp_test_kJpSEay4QVdT5N",
       amount: "1000",
       currency: "USD",
       description: "Artifex Ai",
@@ -108,6 +108,7 @@ const Pricing = () => {
     
     <div className="overflow-x-hidden">
     <div 
+    id="pricing"
       className={`container mx-auto px-4 py-20 ${isPaymentModalOpen ? 'overflow-hidden' : ''}`}
       style={{ 
         overscrollBehavior: 'none',
@@ -172,8 +173,9 @@ const Pricing = () => {
                 id="rzp-button1"
                 className={`bg-indigo-600 text-white font-medium py-3 px-6 rounded hover:scale-105 hover:shadow 
                   transition-all duration-300 w-full ${
-                    index === 1 ? "mb-3" : ""
+                    index === 1 ? "mb-3 cursor-not-allowed opacity-50" : ""
                   }`}
+                  disabled={index === 1}
                   >
                 Choose Plan
               </button>
