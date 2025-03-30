@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { carddetails, chats } from "../AiChatBot/AiChatBotConstant";
+import { carddetails } from "../AiChatBot/AiChatBotConstant";
 import { analyzeImageWithPrompt } from "../../util/GeminiImgText";
 import AIChatbotLoader from "../AiChatBot/AiChatBotLoader";
-import { div } from "framer-motion/client";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export const ImgToTextBotHome = () => {
   const [isChatOpened, setisChatOpened] = useState(false); // history chat button 
@@ -351,7 +352,19 @@ export const ImgToTextBotHome = () => {
                           className="w-32 h-32 object-cover rounded-lg mb-2"
                         />
                       )}
+                      {chat.sender === "user" ? (
+
                       <p className="text-s">{chat.message}</p>
+                      ) : (
+                        <div className="markdown-content text-sm">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]} >
+                            {chat.message}
+
+                            </ReactMarkdown > 
+
+                        </div>
+                      
+                      )}
                     </div>
                   </div>
                 ))}
