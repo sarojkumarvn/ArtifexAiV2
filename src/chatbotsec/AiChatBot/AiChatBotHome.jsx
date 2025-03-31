@@ -74,7 +74,7 @@ export const AiChatBotHome = () => {
   return (
     <>
       <AIChatbotLoader />
-      <div className="flex h-screen bg-white text-gray-800 overflow-y-hidden">
+      <div className="flex h-screen w-full bg-white text-gray-800 overflow-y-hidden">
         {/* Sidebar */}
         <div className="w-1/4 bg-gray-100 border-r border-gray-200 p-4 flex flex-col">
           <div className="flex items-center justify-between mb-4">
@@ -107,7 +107,7 @@ export const AiChatBotHome = () => {
                   d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 6a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 6a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
                   clipRule="evenodd"
                 />
-              </svg>
+              </svg> 
             </button>
           </div>
 
@@ -137,7 +137,7 @@ export const AiChatBotHome = () => {
             <div className="flex justify-between items-center mb-2">
               <button
                 onClick={toggleChat}
-                className="text-white text-xl bg-green-600 px-2 py-1 rounded w-full"
+                className="text-white text-xl bg-indigo-600 px-2 py-1 rounded w-full"
               >
                 <span>Chats</span>
               </button>
@@ -162,7 +162,7 @@ export const AiChatBotHome = () => {
           <div className="mt-auto">
             <button
               onClick={handlenewchat}
-              className="flex items-center justify-between w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-md"
+              className="flex items-center justify-between w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-md"
             >
               <span>New chat</span>
               <span className="text-xl">+</span>
@@ -179,7 +179,7 @@ export const AiChatBotHome = () => {
             </div>
 
             <div className="flex items-center space-x-2">
-              <button className="px-2 py-1 text-xs bg-green-100 text-green-600 rounded">
+              <button className="px-2 py-1 text-xs bg-indigo-100 text-indigo-600 rounded">
                 {isLoaded ? (
                   <span>{user.firstName}</span>
                 ) : (
@@ -325,7 +325,7 @@ export const AiChatBotHome = () => {
                 />
                 <button
                   type="submit"
-                  className="bg-green-600 hover:bg-green-500 rounded-lg p-2 ml-2 text-white"
+                  className="bg-indigo-700 hover:bg-indigo-600 rounded-lg p-2 ml-2 text-white"
                 >
                   <svg
                     className="h-5 w-5"
