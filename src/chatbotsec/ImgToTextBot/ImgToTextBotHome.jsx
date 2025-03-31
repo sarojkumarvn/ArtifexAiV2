@@ -2,11 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { carddetails } from "../AiChatBot/AiChatBotConstant";
 import { analyzeImageWithPrompt } from "../../util/GeminiImgText";
 import AIChatbotLoader from "../AiChatBot/AiChatBotLoader";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { BsArrowLeftSquareFill } from "react-icons/bs";
+import { BsFillArrowRightSquareFill } from "react-icons/bs";
+import { MdOutlineChat } from "react-icons/md";
+import { GiExitDoor } from "react-icons/gi";
+import { Link } from "react-router-dom";
 export const ImgToTextBotHome = () => {
-  const [isChatOpened, setisChatOpened] = useState(false); // history chat button 
+  const [isChatOpened, setisChatOpened] = useState(false); // history chat button
   const [history, setHistory] = useState([]); // Stores chat history
   const [userInput, setUserInput] = useState(""); // Stores user input
   const [loading, setLoading] = useState(false); // loader state
@@ -18,15 +22,13 @@ export const ImgToTextBotHome = () => {
 
   const chatEndRef = useRef(null); // Ref for auto-scrolling to the bottom
   const fileInputRef = useRef(null); // Ref for file input
-  const imageButtonRef = useRef(null);// Ref for image upload button
+  const imageButtonRef = useRef(null); // Ref for image upload button
+  const [isSidebarOpened, setisSidebarOpened] = useState(true);
 
-
-    // Toggling the chatbutton
-    const toggleChat = () => {
-      setisChatOpened(!isChatOpened);
-    };
-
-
+  // Toggling the chatbutton
+  const toggleChat = () => {
+    setisChatOpened(!isChatOpened);
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0]; // Targetting the selected file
@@ -48,8 +50,6 @@ export const ImgToTextBotHome = () => {
       }
     }
   };
-
-
 
   // Function to generate a bot response using Gemini API
   const generateBotResponse = async (prompt, imageBase64) => {
@@ -150,100 +150,113 @@ export const ImgToTextBotHome = () => {
       <AIChatbotLoader />
       <div className="flex h-screen bg-white text-gray-800 overflow-y-hidden">
         {/* Sidebar */}
-        <div className="w-1/4 bg-gray-100 border-r border-gray-200 p-4 flex flex-col">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+        {isSidebarOpened ? (
+          <div className="w-1/4 bg-gray-100 border-r border-gray-200 p-4 flex flex-col">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+
+                <span className="ml-2 font-medium">My Chats</span>
               </div>
-
-              <span className="ml-2 font-medium">My Chats</span>
-            </div>
-            <button className="text-gray-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 6a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 6a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <div className="relative mb-4">
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full bg-white border border-gray-300 rounded-md py-2 pl-8 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
-            />
-            <svg
-              className="absolute left-2 top-2.5 h-4 w-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-
-          <div className="mb-6">
-            {/* TO be added  */}
-            <div className="flex justify-between items-center mb-2">
               <button
-                onClick={toggleChat}
-              className={`text-white text-xl bg-indigo-600 hover:bg-indigo-500 px-2 py-1 rounded w-full`}
-              > 
-                <span>Chats</span>
+                className="text-gray-500 "
+                onClick={() => setisSidebarOpened(false)}
+              >
+                <BsArrowLeftSquareFill className="text-xl hover:scale-110 transform transition-all duration-300" />
               </button>
             </div>
 
-            {isChatOpened && history.length > 0 && (
-              <div className="space-y-2">
-                {history.filter((chat)=> chat.sender === "user").map((chat , index)=>(
-                  <div
-                  key={index}
-                  className={`bg-white rounded-md p-3 cursor-pointer hover:bg-gray-50 border border-gray-700`}
-                  >
-                    <p className="text-gray-900 text-xs">{chat.message}</p>
+            <div className="relative mb-4">
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full bg-white border border-gray-300 rounded-md py-2 pl-8 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+              />
+              <svg
+                className="absolute left-2 top-2.5 h-4 w-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
 
-                  </div>
-                ))}
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-2">
+                <button
+                  onClick={toggleChat}
+                  className={`text-white text-xl bg-indigo-600 hover:bg-indigo-500 px-2 py-1 rounded w-full`}
+                >
+                  <span>Chats</span>
+                </button>
               </div>
-            )}
-          </div>
 
-          <div className="mt-auto">
-            <button
-              onClick={handlenewchat}
-              className="flex items-center justify-between w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-md"
-            >
-              <span>New chat</span>
-              <span className="text-xl">+</span>
-            </button>
+              {isChatOpened && history.length > 0 && (
+                <div className="space-y-2">
+                  {history
+                    .filter((chat) => chat.sender === "user")
+                    .map((chat, index) => (
+                      <div
+                        key={index}
+                        className={`bg-white rounded-md p-3 cursor-pointer hover:bg-gray-50 border border-gray-700`}
+                      >
+                        <p className="text-gray-900 text-xs">{chat.message}</p>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-auto">
+              <button
+                onClick={handlenewchat}
+                className="flex items-center justify-between w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-md"
+              >
+                <span>New chat</span>
+                <span className="text-xl">+</span>
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="w-10 bg-gray-100 border-r border-gray-200 p-1 flex flex-col">
+            <button className="text-gray-500 mt-5 ml-2">
+              <BsFillArrowRightSquareFill
+                className="text-xl hover:scale-110 transform transition-all duration-300"
+                onClick={() => setisSidebarOpened(true)}
+              />
+            </button>
+            <div className="tooltip tooltip-right" data-tip="Chat">
+              <button>
+                <MdOutlineChat
+                  className="text-xl hover:scale-110 transform transition-all duration-300 ml-2 mt-5 "
+                  onClick={() =>
+                  {userInput.trim() === "" ? setisSidebarOpened(true) && setisChatOpened(true) : setisSidebarOpened(false)}
+                  }
+                />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
@@ -254,25 +267,24 @@ export const ImgToTextBotHome = () => {
             </div>
 
             <div className="flex items-center space-x-2">
-              <button className="px-4 py-1 text-xs bg-indigo-600 text-white rounded">
-                Artifex Ai
+              {!isSidebarOpened && (
+                <button
+                
+                onClick={handlenewchat}
+                className="px-2 py-1 bg-indigo-600 text-white rounded hover:scale-105 transition-all duration-300 hover:bg-indigo-500 hover:text-white">
+                  Refresh
+                  <span className="ml-1 text-sm">⟳</span>
+                </button>
+              )}
+              <Link
+              to={"/"}
+              
+              >
+              <button className=" hover:text-indigo-600 hover:scale-105 transition-all duration-300 bg-indigo-100 text-indigo-800 rounded flex items-center gap-1 felx-row px-3 py-1">
+                Exit
+                <GiExitDoor />
               </button>
-              <button className="p-1 hover:bg-gray-100 rounded pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h7"
-                  />
-                </svg>
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -353,17 +365,13 @@ export const ImgToTextBotHome = () => {
                         />
                       )}
                       {chat.sender === "user" ? (
-
-                      <p className="text-s">{chat.message}</p>
+                        <p className="text-s">{chat.message}</p>
                       ) : (
                         <div className="markdown-content text-sm">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]} >
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
                             {chat.message}
-
-                            </ReactMarkdown > 
-
+                          </ReactMarkdown>
                         </div>
-                      
                       )}
                     </div>
                   </div>
