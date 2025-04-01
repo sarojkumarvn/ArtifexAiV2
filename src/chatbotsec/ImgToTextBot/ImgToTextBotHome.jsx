@@ -9,6 +9,7 @@ import { BsFillArrowRightSquareFill } from "react-icons/bs";
 import { MdOutlineChat } from "react-icons/md";
 import { GiExitDoor } from "react-icons/gi";
 import { Link } from "react-router-dom";
+
 export const ImgToTextBotHome = () => {
   const [isChatOpened, setisChatOpened] = useState(false); // history chat button
   const [history, setHistory] = useState([]); // Stores chat history
@@ -23,7 +24,36 @@ export const ImgToTextBotHome = () => {
   const chatEndRef = useRef(null); // Ref for auto-scrolling to the bottom
   const fileInputRef = useRef(null); // Ref for file input
   const imageButtonRef = useRef(null); // Ref for image upload button
-  const [isSidebarOpened, setisSidebarOpened] = useState(true);
+  const [isSidebarOpened, setisSidebarOpened] = useState(true); // for the buttons
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [showFooter, setShowFooter] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const { innerWidth, innerHeight } = window;
+      setWindowDimensions({ width: innerWidth, height: innerHeight });
+      
+      // Updated responsive breakpoints
+      if (innerWidth < 779 || innerHeight < 611) {
+        setShowSidebar(false);
+        setisSidebarOpened(false);
+        setShowFooter(false);
+      } else {
+        setShowSidebar(true);
+        setisSidebarOpened(true);
+        setShowFooter(true);
+      }
+    };
+    
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call on initial render
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Toggling the chatbutton
   const toggleChat = () => {
@@ -148,114 +178,123 @@ export const ImgToTextBotHome = () => {
   return (
     <>
       <AIChatbotLoader />
-      <div className="flex h-screen bg-white text-gray-800 overflow-y-hidden">
+      <div className="w-full flex h-screen bg-white text-gray-800 overflow-y-hidden">
         {/* Sidebar */}
-        {isSidebarOpened ? (
-          <div className="w-1/4 bg-gray-100 border-r border-gray-200 p-4 flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
+        {showSidebar && (
+          <>
+            {isSidebarOpened ? (
+              // Full Sidebar
+              <div className={`${windowDimensions.width < 1024 ? 'w-1/3' : 'w-1/4'} bg-gray-100 border-r border-gray-200 p-4 flex flex-col`}>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <span className={`ml-2 font-medium ${windowDimensions.width < 900 ? 'text-sm' : ''}`}>My Chats</span>
+                  </div>
+                  <button
+                    className="text-gray-500"
+                    onClick={() => setisSidebarOpened(false)}
+                  >
+                    <BsArrowLeftSquareFill className="text-xl hover:scale-110 transform transition-all duration-300" />
+                  </button>
+                </div>
+
+                <div className="relative mb-4">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="w-full bg-white border border-gray-300 rounded-md py-2 pl-8 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+                  />
                   <svg
+                    className="absolute left-2 top-2.5 h-4 w-4 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
                   >
                     <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
-                      clipRule="evenodd"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
                 </div>
 
-                <span className="ml-2 font-medium">My Chats</span>
-              </div>
-              <button
-                className="text-gray-500 "
-                onClick={() => setisSidebarOpened(false)}
-              >
-                <BsArrowLeftSquareFill className="text-xl hover:scale-110 transform transition-all duration-300" />
-              </button>
-            </div>
+                <div className="mb-6">
+                  <div className="flex justify-between items-center mb-2">
+                    <button
+                      onClick={toggleChat}
+                      className="text-white text-sm bg-indigo-600 hover:bg-indigo-500 px-2 py-1 rounded w-full transition-all duration-200"
+                    >
+                      <span>Chats</span>
+                    </button>
+                  </div>
 
-            <div className="relative mb-4">
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-full bg-white border border-gray-300 rounded-md py-2 pl-8 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
-              />
-              <svg
-                className="absolute left-2 top-2.5 h-4 w-4 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <button
-                  onClick={toggleChat}
-                  className={`text-white text-xl bg-indigo-600 hover:bg-indigo-500 px-2 py-1 rounded w-full`}
-                >
-                  <span>Chats</span>
-                </button>
-              </div>
-
-              {isChatOpened && history.length > 0 && (
-                <div className="space-y-2">
-                  {history
-                    .filter((chat) => chat.sender === "user")
-                    .map((chat, index) => (
-                      <div
-                        key={index}
-                        className={`bg-white rounded-md p-3 cursor-pointer hover:bg-gray-50 border border-gray-700`}
-                      >
-                        <p className="text-gray-900 text-xs">{chat.message}</p>
-                      </div>
-                    ))}
+                  {isChatOpened && history.length > 0 && (
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {history
+                        .filter((chat) => chat.sender === "user")
+                        .map((chat, index) => (
+                          <div
+                            key={index}
+                            className="bg-white rounded-md p-3 cursor-pointer hover:bg-gray-50 border border-gray-700 transition-all duration-200"
+                          >
+                            <p className="text-gray-900 text-xs truncate">
+                              {chat.message}
+                            </p>
+                          </div>
+                        ))}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            <div className="mt-auto">
-              <button
-                onClick={handlenewchat}
-                className="flex items-center justify-between w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-md"
-              >
-                <span>New chat</span>
-                <span className="text-xl">+</span>
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="w-10 bg-gray-100 border-r border-gray-200 p-1 flex flex-col">
-            <button className="text-gray-500 mt-5 ml-2">
-              <BsFillArrowRightSquareFill
-                className="text-xl hover:scale-110 transform transition-all duration-300"
-                onClick={() => setisSidebarOpened(true)}
-              />
-            </button>
-            <div className="tooltip tooltip-right" data-tip="Chat">
-              <button>
-                <MdOutlineChat
-                  className="text-xl hover:scale-110 transform transition-all duration-300 ml-2 mt-5 "
-                  onClick={() =>
-                  {userInput.trim() === "" ? setisSidebarOpened(true) && setisChatOpened(true) : setisSidebarOpened(false)}
-                  }
-                />
-              </button>
-            </div>
-          </div>
+                <div className="mt-auto">
+                  <button
+                    onClick={handlenewchat}
+                    className="flex items-center justify-between w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-md transition-all duration-200"
+                  >
+                    <span className={`${windowDimensions.width < 900 ? 'text-sm' : ''}`}>New chat</span>
+                    <span className="text-xl">+</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              // Collapsed Sidebar
+              <div className="w-10 bg-gray-100 border-r border-gray-200 p-1 flex flex-col">
+                <button className="text-gray-500 mt-5 ml-2">
+                  <BsFillArrowRightSquareFill
+                    className="text-xl hover:scale-110 transform transition-all duration-300"
+                    onClick={() => setisSidebarOpened(true)}
+                  />
+                </button>
+                <div className="tooltip tooltip-right" data-tip="Chat">
+                  <button>
+                    <MdOutlineChat
+                      className="text-xl hover:scale-110 transform transition-all duration-300 ml-2 mt-5"
+                      onClick={() => {
+                        userInput.trim() === ""
+                          ? (setisSidebarOpened(true), setisChatOpened(true))
+                          : setisSidebarOpened(false);
+                      }}
+                    />
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* Main Chat Area */}
@@ -269,21 +308,25 @@ export const ImgToTextBotHome = () => {
             <div className="flex items-center space-x-2">
               {!isSidebarOpened && (
                 <button
-                
-                onClick={handlenewchat}
-                className="px-2 py-1 bg-indigo-600 text-white rounded hover:scale-105 transition-all duration-300 hover:bg-indigo-500 hover:text-white">
-                  Refresh
-                  <span className="ml-1 text-sm">⟳</span>
+                  onClick={handlenewchat}
+                  className="px-2 py-1 bg-indigo-300 tooltip tooltip-bottom text-white rounded hover:scale-105 transition-all duration-300 hover:bg-indigo-500 hover:text-white"
+                  data-tip="Refresh"
+                >
+                  {windowDimensions.width > 400 ? "Refresh" : ""}
+                  <span className="ml-1 text-xl">⟳</span>
                 </button>
               )}
-              <Link
-              to={"/"}
-              
-              >
-              <button className=" hover:text-indigo-600 hover:scale-105 transition-all duration-300 bg-indigo-100 text-indigo-800 rounded flex items-center gap-1 felx-row px-3 py-1">
-                Exit
-                <GiExitDoor />
-              </button>
+              <Link to={"/"}>
+              <div className="tooltip tooltip-bottom" data-tip="Home">
+
+                <button
+                  className=" hover:text-indigo-600 hover:scale-105 transition-all duration-300 bg-indigo-100 text-indigo-800 rounded flex items-center gap-1 px-3 py-1"
+                  
+                  >
+                  {windowDimensions.width > 400 ? "Exit" : ""}
+                  <GiExitDoor />
+                </button>
+                  </div>
               </Link>
             </div>
           </div>
@@ -292,7 +335,7 @@ export const ImgToTextBotHome = () => {
           <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
             {/* Welcome Screen (only shown if no chat history exists) */}
             {history.length === 0 && (
-              <div className="flex flex-col items-center text-center my-16">
+              <div className="flex flex-col items-center text-center my-8 md:my-16">
                 <div className="bg-white border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center mb-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -307,17 +350,17 @@ export const ImgToTextBotHome = () => {
                     />
                   </svg>
                 </div>
-                <h2 className="text-2xl font-semibold mb-2">
+                <h2 className={`${windowDimensions.width < 600 ? 'text-xl' : 'text-2xl'} font-semibold mb-2`}>
                   How can I help you today?
                 </h2>
-                <p className="text-gray-500 text-sm max-w-md">
+                <p className="text-gray-500 text-sm max-w-md px-4">
                   This conversation already is private only to the user by their
                   name, and there is no sharing of personal information with any
                   service outside of the user.
                 </p>
 
                 {/* Adver Card section */}
-                <div className="grid grid-cols-3 gap-4 mt-8 w-full max-w-lg">
+                <div className={`grid ${windowDimensions.width < 500 ? 'grid-cols-1' : windowDimensions.width < 700 ? 'grid-cols-2' : 'grid-cols-3'} gap-4 mt-8 w-full max-w-lg px-4`}>
                   {carddetails.map((card, index) => (
                     <div
                       key={index}
@@ -351,7 +394,7 @@ export const ImgToTextBotHome = () => {
                     }`}
                   >
                     <div
-                      className={`max-w-md p-3 rounded-lg ${
+                      className={`${windowDimensions.width < 500 ? 'max-w-[80%]' : 'max-w-md'} p-3 rounded-lg ${
                         chat.sender === "user"
                           ? "bg-green-100 text-green-800 mr-5"
                           : "bg-gray-100 text-gray-800"
@@ -361,7 +404,7 @@ export const ImgToTextBotHome = () => {
                         <img
                           src={chat.image}
                           alt="User uploaded"
-                          className="w-32 h-32 object-cover rounded-lg mb-2"
+                          className={`${windowDimensions.width < 500 ? 'w-24 h-24' : 'w-32 h-32'} object-cover rounded-lg mb-2`}
                         />
                       )}
                       {chat.sender === "user" ? (
@@ -415,20 +458,20 @@ export const ImgToTextBotHome = () => {
                         <path
                           d="M5 21C9.20998 16.2487 13.9412 9.9475 21 14.6734"
                           stroke="currentColor"
-                          stroke-width="1.5"
+                          strokeWidth="1.5"
                         />
                         <path
                           d="M17 4.50012C17.4915 3.99442 18.7998 2.00012 19.5 2.00012M22 4.50012C21.5085 3.99442 20.2002 2.00012 19.5 2.00012M19.5 2.00012V10.0001"
                           stroke="currentColor"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                         <path
                           d="M20.9999 13C20.998 17.147 20.9472 19.2703 19.6088 20.6088C18.2175 22 15.9783 22 11.5 22C7.02166 22 4.78249 22 3.39124 20.6088C2 19.2175 2 16.9783 2 12.5C2 8.02166 2 5.78249 3.39124 4.39124C4.78249 3 7.02166 3 11.5 3C11.6699 3 14 3.00008 14 3.00008"
                           stroke="currentColor"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
                         />
                       </svg>
                     </button>
@@ -444,7 +487,7 @@ export const ImgToTextBotHome = () => {
 
                   {/* Small popup for image preview */}
                   {imagePreview && (
-                    <div className="absolute z-10 left-0 -top-29 w-32 bg-gray-100 p-3 mb-200 rounded-lg shadow-lg border border-gray-500">
+                    <div className="absolute z-10 left-0 -top-28 w-32 bg-gray-100 p-3 rounded-lg shadow-lg border border-gray-500">
                       <div className="relative">
                         <img
                           src={imagePreview}
@@ -454,28 +497,21 @@ export const ImgToTextBotHome = () => {
                         <button
                           type="button"
                           onClick={handleRemoveImage}
-                          className="absolute -top-2 -right-2 text-white rounded-full w-5 h-5 flex items-center justify-center"
+                          className="absolute -top-2 -right-2 bg-gray-800 text-white rounded-full w-5 h-5 flex items-center justify-center"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                            color="#461717"
+                            width="18"
+                            height="18"
                             fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           >
-                            <path
-                              d="M14.9994 15L9 9M9.00064 15L15 9"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                            />
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
                           </svg>
                         </button>
                       </div>
@@ -491,7 +527,7 @@ export const ImgToTextBotHome = () => {
                       ? "Add a prompt for your image..."
                       : "First upload an image..."
                   }
-                  className="flex-1 bg-transparent outline-none text-gray-800"
+                  className="flex-1 bg-transparent outline-none text-gray-800 text-sm"
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
                 />
@@ -501,8 +537,9 @@ export const ImgToTextBotHome = () => {
                   className={`rounded-lg p-2 ml-2 text-white ${
                     !imagePreview || userInput.trim() === ""
                       ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-indigo-600 hover:bg-indigo-400"
+                      : "bg-indigo-600 hover:bg-indigo-400 transition-colors duration-200"
                   }`}
+                  disabled={!imagePreview || userInput.trim() === ""}
                 >
                   <svg
                     className="h-5 w-5"
@@ -532,10 +569,12 @@ export const ImgToTextBotHome = () => {
                 required.
               </p>
 
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Artifex Ai can make mistakes. Consider checking important
-                information.
-              </p>
+              {showFooter && (
+                <p className="text-xs text-gray-500 text-center mt-4">
+                  Artifex AI can make mistakes. Consider checking important
+                  information.
+                </p>
+              )}
             </form>
           </div>
         </div>
