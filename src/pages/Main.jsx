@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 export const Main = () => {
      const canvasRef = useRef(null);
@@ -65,6 +66,32 @@ export const Main = () => {
           cancelAnimationFrame(animationFrameId);
         };
       }, []);
+        const [lastScrollTop, setLastScrollTop] = useState(0);
+      
+        useEffect(() => {
+          const handleScroll = () => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const nav = document.querySelector("nav");
+      
+            if (nav) {
+              nav.style.transform = currentScroll > lastScrollTop ? "translateY(-100%)" : "translateY(0)";
+            }
+            setLastScrollTop(currentScroll <= 0 ? 0 : currentScroll);
+          };
+      
+          window.addEventListener("scroll", handleScroll);
+          
+          return () => {
+            window.removeEventListener("scroll", handleScroll);
+          };
+        }, [lastScrollTop]);
+      
+        const scrollToSection = (id) => {
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        };
     
   return (
     
@@ -82,10 +109,17 @@ export const Main = () => {
     Artifex AI brings together image recognition, text generation, and content creation in a seamless experience.
   </p>
   <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+    <Link
+    to={"/app/aichatbot"}
+    
+    >
     <button className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors w-full sm:w-auto">
       Get Started
     </button>
-    <button className="text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors w-full sm:w-auto">
+    </Link>
+    <button 
+    onClick={() => scrollToSection("features")}
+    className="text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors w-full sm:w-auto">
       Explore Features
     </button>
   </div>
