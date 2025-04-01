@@ -393,25 +393,66 @@ export const ImgToTextBotHome = () => {
                       chat.sender === "user" ? "justify-end" : "justify-start"
                     }`}
                   >
+                    {/* MODIFIED: Improved bot response for better responsiveness on mobile */}
                     <div
-                      className={`${windowDimensions.width < 500 ? 'max-w-[80%]' : 'max-w-md'} p-3 rounded-lg ${
-                        chat.sender === "user"
-                          ? "bg-green-100 text-green-800 mr-5"
-                          : "bg-gray-100 text-gray-800"
+                      className={`${
+                        chat.sender === "user" ? "bg-green-100 text-green-800 mr-5" : "bg-gray-100 text-gray-800"
+                      } p-3 rounded-lg overflow-hidden break-words ${
+                        windowDimensions.width < 500 
+                          ? (chat.sender === "user" ? "max-w-[75%]" : "max-w-[85%]") 
+                          : windowDimensions.width < 768 
+                            ? (chat.sender === "user" ? "max-w-[70%]" : "max-w-[80%]") 
+                            : "max-w-md"
                       }`}
                     >
+                      {/* MODIFIED: Responsive image sizing based on screen width */}
                       {chat.image && (
                         <img
                           src={chat.image}
                           alt="User uploaded"
-                          className={`${windowDimensions.width < 500 ? 'w-24 h-24' : 'w-32 h-32'} object-cover rounded-lg mb-2`}
+                          className={`${
+                            windowDimensions.width < 400 ? 'w-20 h-20' :
+                            windowDimensions.width < 500 ? 'w-24 h-24' : 'w-32 h-32'
+                          } object-cover rounded-lg mb-2`}
                         />
                       )}
+                      {/* MODIFIED: Text sizing for better readability on small screens */}
                       {chat.sender === "user" ? (
-                        <p className="text-s">{chat.message}</p>
+                        <p className={`${windowDimensions.width < 400 ? 'text-xs' : 'text-sm'}`}>
+                          {chat.message}
+                        </p>
                       ) : (
-                        <div className="markdown-content text-sm">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        <div className={`markdown-content ${windowDimensions.width < 400 ? 'text-xs' : 'text-sm'}`}>
+                          {/* ADDED: Custom styles for markdown content to ensure proper wrapping */}
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              // ADDED: Ensuring code blocks don't overflow on small screens
+                              code: ({ node, inline, className, children, ...props }) => (
+                                <code
+                                  className={`${className} ${
+                                    !inline ? 'block whitespace-pre-wrap overflow-x-auto max-w-full' : ''
+                                  }`}
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              ),
+                              // ADDED: Making sure images are responsive
+                              img: ({ node, ...props }) => (
+                                <img
+                                  className="max-w-full h-auto rounded"
+                                  {...props}
+                                />
+                              ),
+                              // ADDED: Ensure tables don't break layout
+                              table: ({ node, ...props }) => (
+                                <div className="overflow-x-auto w-full">
+                                  <table className="w-full" {...props} />
+                                </div>
+                              ),
+                            }}
+                          >
                             {chat.message}
                           </ReactMarkdown>
                         </div>

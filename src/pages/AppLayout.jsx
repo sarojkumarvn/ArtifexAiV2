@@ -1,7 +1,6 @@
 import { SignInButton, useAuth } from "@clerk/clerk-react";
 import React from "react";
 import { Outlet } from "react-router-dom";
-import AIChatbotLoader from "../chatbotsec/AiChatBot/AiChatBotLoader";
 
 export const AppLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();

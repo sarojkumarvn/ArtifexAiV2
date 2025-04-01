@@ -74,24 +74,23 @@ export const Main = () => {
       className="absolute inset-0 z-0"
       style={{ background: "rgba(255, 255, 255, 0.1)" }}
     />
-    <div className="text-center mb-16 max-w-3xl mx-auto relative z-10">
-      <h1 className="text-6xl font-bold text-gray-900 mb-6">
-        Experience the <span className="text-blue-500">Future</span> of AI
-        Communication
-      </h1>
-      <p className="text-xl text-gray-600 mb-8">
-        Artifex AI brings together image recognition, text generation, and
-        content creation in a seamless experience.
-      </p>
-      <div className="flex items-center justify-center space-x-4">
-        <button className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
-          Get Started
-        </button>
-        <button className="text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors">
-          Explore Features
-        </button>
-      </div>
-    </div>
+<div className="text-center mb-16 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+  <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+    Experience the <span className="text-blue-500">Future</span> of AI Communication
+  </h1>
+  <p className="text-lg sm:text-xl text-gray-600 mb-8">
+    Artifex AI brings together image recognition, text generation, and content creation in a seamless experience.
+  </p>
+  <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+    <button className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors w-full sm:w-auto">
+      Get Started
+    </button>
+    <button className="text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors w-full sm:w-auto">
+      Explore Features
+    </button>
+  </div>
+</div>
+
   </main>
    
   )
