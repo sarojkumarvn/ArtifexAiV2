@@ -502,7 +502,7 @@ export const ImageGeneBotHome = () => {
                     </div>
                   </div>
 
-                  {/* Download button */}
+                  {/* Download button Not working */}
                   <div className="ml-2 flex items-center">
                     {messages.map(
                       (message) =>

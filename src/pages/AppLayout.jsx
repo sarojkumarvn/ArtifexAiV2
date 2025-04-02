@@ -11,6 +11,8 @@ export const AppLayout = () => {
       </div>
     );
   }
+
+  //If the user is not signed in then show this , else show the app in the outlet
   if (!isSignedIn)
     return (
       <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-4">

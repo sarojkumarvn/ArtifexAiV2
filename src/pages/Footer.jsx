@@ -1,4 +1,6 @@
+
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -54,8 +56,8 @@ const Footer = () => {
           <div className="col-span-1">
             <h3 className="text-gray-900 font-semibold text-lg mb-4">Features</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors" target="_self">Image-to-Text</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors" target="_self">Text-to-Image</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors" target="_self">Image analysis</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors" target="_self">Image Generation</a></li>
               <li><a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors" target="_self">AI Chatbot</a></li>
               <li><a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors" target="_self">API Access</a></li>
               <li><a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors" target="_self">Custom Solutions</a></li>
@@ -71,13 +73,13 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="text-gray-600">123 AI Avenue, Tech City, TC 12345</span>
+                <span className="text-gray-600">756 ,Bls , Od</span>
               </li>
               <li className="flex items-start">
                 <svg className="w-5 h-5 text-indigo-600 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="text-gray-600">info@artifexai.com</span>
+                <span className="text-gray-600">customercare@artifexai.com</span>
               </li>
               <li className="flex items-start">
                 <svg className="w-5 h-5 text-indigo-600 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -94,9 +96,16 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm mb-4 md:mb-0">© 2023 Artifex AI. All rights reserved.</p>
             <div className="flex space-x-6">
-              <a href="#" className="text-gray-500 hover:text-indigo-600 text-sm" target="_self">Privacy Policy</a>
-              <a href="#" className="text-gray-500 hover:text-indigo-600 text-sm" target="_self">Terms of Service</a>
-              <a href="#" className="text-gray-500 hover:text-indigo-600 text-sm" target="_self">Cookie Policy</a>
+             <Link
+             to={"/app/privacy"}
+             
+             >
+        
+              <button  className="text-gray-500 hover:text-indigo-600 text-sm">Privacy Policy</button>
+             </Link>
+              
+              <button  className="text-gray-500 hover:text-indigo-600 text-sm" target="_self">Terms of Service</button>
+              <button  className="text-gray-500 hover:text-indigo-600 text-sm" target="_self">Cookie Policy</button>
             </div>
           </div>
         </div>
